@@ -1,0 +1,13 @@
+{
+  "status": "passed",
+  "token_uri_count": 5212,
+  "valid_json_count": 5212,
+  "valid_svg_xml_count": 5212,
+  "unique_svg_outputs": 5212,
+  "svg_dimensions": "512x512 with 64x64 pixel viewBox",
+  "svg_sha256_concatenated": "499a57b27b9ad28e73f038ed9800200374a3925ead08db2162bdb9cd1b066c1a",
+  "min_svg_bytes": 1636,
+  "max_svg_bytes": 2426,
+  "max_token_uri_gas_local_evm": "798917",
+  "note": "Local EthereumJS VM validation only; does not certify marketplace or wallet rendering."
+}

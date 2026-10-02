@@ -1,0 +1,41 @@
+{
+  "status": "passed",
+  "contract": "UltraCat5212",
+  "renderer": "UltraCatRenderer",
+  "total_supply": 5212,
+  "airdrop_recipient_count": 701,
+  "airdrop_merkle_root": "0x8d76cd31a22143ef72d43419c198435d88d7bdfca371978359dcb2f12e24c43c",
+  "reserve_count": 4511,
+  "transferability_check": "passed",
+  "royalty_check": "5% ERC-2981",
+  "metadata_check": "embedded JSON and Base64 SVG decoded successfully",
+  "gas": {
+    "renderer_deploy_gas": "4220869",
+    "collection_deploy_gas": "1969476",
+    "airdrop_batch_gas": [
+      "5333575",
+      "5274815",
+      "5275355",
+      "5276975",
+      "5275295",
+      "5273435",
+      "5275655",
+      "67326"
+    ],
+    "reserve_batch_gas": [
+      "1032948",
+      "1011848",
+      "1011848",
+      "1011848",
+      "1011848",
+      "1011848",
+      "1011848",
+      "1011848",
+      "1011848",
+      "53408"
+    ],
+    "token_uri_1_gas": "627941",
+    "token_uri_1_of_1_gas": "630769",
+    "test_chain": "EthereumJS VM, Paris-compatible bytecode; indicative only, not a Cronos gas quote"
+  }
+}

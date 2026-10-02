@@ -1,0 +1,523 @@
+{
+  "collection": "ULTRA CAT",
+  "symbol": "ULTCAT",
+  "network": "Cronos mainnet",
+  "chain_id": 25,
+  "status": "pre-deployment build; no contract is deployed",
+  "total_supply": 5212,
+  "wolfies_collection": "0x719fdfb0ba006747a83438cc8900c8a2b35e0aff",
+  "wolfies_snapshot_block": 97406258,
+  "wolfies_snapshot_hash": "0x488dfd1b1ac4b879ea3aeba045b87aac498bbfca185e324108ec9caf3907b809",
+  "airdrop_rule": "one per unique snapshot owner, excluding only the dead sink; contract addresses included",
+  "airdrop_count": 701,
+  "reserve_count": 4511,
+  "airdrop_recipient_file": "snapshot/airdrop-recipients-block-97406258.csv",
+  "airdrop_proofs_file": "release/airdrop-proofs.json",
+  "airdrop_merkle_root": "0x8d76cd31a22143ef72d43419c198435d88d7bdfca371978359dcb2f12e24c43c",
+  "airdrop_order": "ascending keccak256(abi.encodePacked(public collection seed, address)); lowercase address breaks any hash tie; token IDs 1..701",
+  "seed_text": "ULTCAT_5212_GENESIS_V1",
+  "seed_keccak256": "0x879e04c030e0512f617b8c602c12687b3b7f1d659b9e8a0083566c5b5de1bce7",
+  "trait_category_count": 7,
+  "trait_combinations": 279936,
+  "unique_trait_combinations_verified": 5212,
+  "trait_categories": {
+    "Background": [
+      "Neon Alley",
+      "Moonlit Rooftop",
+      "Cat Garden",
+      "Candy Grid",
+      "Royal Blue",
+      "Aurora"
+    ],
+    "Cat Style": [
+      "Shorthair",
+      "Maine Coon",
+      "Persian",
+      "Siamese",
+      "Sphynx",
+      "Fold-Eared"
+    ],
+    "Fur Color": [
+      "Ginger",
+      "Tuxedo",
+      "Calico",
+      "Silver Tabby",
+      "Cream",
+      "Lavender"
+    ],
+    "Outfit": [
+      "Street Hoodie",
+      "Royal Cape",
+      "Star Suit",
+      "Paw Sweater",
+      "Tuxedo",
+      "Astro Armor"
+    ],
+    "Expression": [
+      "Curious",
+      "Sleepy",
+      "Grinning",
+      "Sly",
+      "Blep",
+      "Fierce"
+    ],
+    "Eye Style": [
+      "Emerald",
+      "Sapphire",
+      "Gold",
+      "Star Pupils",
+      "Slit Eyes",
+      "Heterochrome"
+    ],
+    "Ornament": [
+      "Bell Collar",
+      "Blue Bow",
+      "Mini Crown",
+      "Headphones",
+      "Moon Charm",
+      "Flower Clip"
+    ]
+  },
+  "rarity_counts": {
+    "Common": 2500,
+    "Uncommon": 1500,
+    "Rare": 800,
+    "Epic": 300,
+    "Legendary": 91,
+    "1/1": 21
+  },
+  "one_of_one_count": 21,
+  "one_of_one_assignments": [
+    {
+      "tokenId": 133,
+      "name": "Crystal Claw",
+      "airdrop": true
+    },
+    {
+      "tokenId": 631,
+      "name": "Thunder Tabby",
+      "airdrop": true
+    },
+    {
+      "tokenId": 1002,
+      "name": "Cosmic Catnip",
+      "airdrop": false
+    },
+    {
+      "tokenId": 1212,
+      "name": "Aurora Purr",
+      "airdrop": false
+    },
+    {
+      "tokenId": 1295,
+      "name": "Pearl Prowler",
+      "airdrop": false
+    },
+    {
+      "tokenId": 1373,
+      "name": "Moonbeam Monarch",
+      "airdrop": false
+    },
+    {
+      "tokenId": 1412,
+      "name": "Midnight Oracle",
+      "airdrop": false
+    },
+    {
+      "tokenId": 1446,
+      "name": "Starfall Sprite",
+      "airdrop": false
+    },
+    {
+      "tokenId": 1500,
+      "name": "Dreamweaver",
+      "airdrop": false
+    },
+    {
+      "tokenId": 1871,
+      "name": "Ember Empress",
+      "airdrop": false
+    },
+    {
+      "tokenId": 2242,
+      "name": "Solar Pouncer",
+      "airdrop": false
+    },
+    {
+      "tokenId": 2369,
+      "name": "Ultra Genesis",
+      "airdrop": false
+    },
+    {
+      "tokenId": 2709,
+      "name": "Golden Comet",
+      "airdrop": false
+    },
+    {
+      "tokenId": 2740,
+      "name": "Frostfang",
+      "airdrop": false
+    },
+    {
+      "tokenId": 2916,
+      "name": "Jade Jester",
+      "airdrop": false
+    },
+    {
+      "tokenId": 3111,
+      "name": "Nebula Whiskers",
+      "airdrop": false
+    },
+    {
+      "tokenId": 3609,
+      "name": "Velvet Phantom",
+      "airdrop": false
+    },
+    {
+      "tokenId": 3980,
+      "name": "Crown of Nine Lives",
+      "airdrop": false
+    },
+    {
+      "tokenId": 4478,
+      "name": "Lucky Lantern",
+      "airdrop": false
+    },
+    {
+      "tokenId": 4849,
+      "name": "Prismatic Paw",
+      "airdrop": false
+    },
+    {
+      "tokenId": 4996,
+      "name": "Royal Ragdoll",
+      "airdrop": false
+    }
+  ],
+  "one_of_ones_airdropped_to_snapshot_recipients": 2,
+  "one_of_one_recipient_assignments": [
+    {
+      "tokenId": 133,
+      "name": "Crystal Claw",
+      "airdrop": true,
+      "recipient": "0x080c3e4d15c00b4e50aefd4197e2ce57fc35c72d"
+    },
+    {
+      "tokenId": 631,
+      "name": "Thunder Tabby",
+      "airdrop": true,
+      "recipient": "0x1f7f7d209d916be0b52f1bfe9ee280de5c2bc41a"
+    }
+  ],
+  "permutation": {
+    "type": "seed-derived full-period LCG over a power-of-two domain with cycle walking",
+    "combo_domain_mask": "0xfffff",
+    "combo_multiplier": "113893",
+    "combo_increment": "374239",
+    "rarity_domain_mask": "0x1fff",
+    "rarity_multiplier": "5741",
+    "rarity_increment": "1051",
+    "max_combo_cycle_steps_for_supply": 30,
+    "max_combo_cycle_token_id": 669,
+    "max_rarity_cycle_steps_for_supply": 9,
+    "max_rarity_cycle_token_id": 2913
+  },
+  "sample_trait_assignments": {
+    "1": [
+      {
+        "category": "Background",
+        "id": 0,
+        "value": "Neon Alley"
+      },
+      {
+        "category": "Cat Style",
+        "id": 1,
+        "value": "Maine Coon"
+      },
+      {
+        "category": "Fur Color",
+        "id": 1,
+        "value": "Tuxedo"
+      },
+      {
+        "category": "Outfit",
+        "id": 2,
+        "value": "Star Suit"
+      },
+      {
+        "category": "Expression",
+        "id": 2,
+        "value": "Grinning"
+      },
+      {
+        "category": "Eye Style",
+        "id": 1,
+        "value": "Sapphire"
+      },
+      {
+        "category": "Ornament",
+        "id": 0,
+        "value": "Bell Collar"
+      }
+    ],
+    "2": [
+      {
+        "category": "Background",
+        "id": 2,
+        "value": "Cat Garden"
+      },
+      {
+        "category": "Cat Style",
+        "id": 4,
+        "value": "Sphynx"
+      },
+      {
+        "category": "Fur Color",
+        "id": 5,
+        "value": "Lavender"
+      },
+      {
+        "category": "Outfit",
+        "id": 2,
+        "value": "Star Suit"
+      },
+      {
+        "category": "Expression",
+        "id": 0,
+        "value": "Curious"
+      },
+      {
+        "category": "Eye Style",
+        "id": 0,
+        "value": "Emerald"
+      },
+      {
+        "category": "Ornament",
+        "id": 0,
+        "value": "Bell Collar"
+      }
+    ],
+    "3": [
+      {
+        "category": "Background",
+        "id": 5,
+        "value": "Aurora"
+      },
+      {
+        "category": "Cat Style",
+        "id": 3,
+        "value": "Siamese"
+      },
+      {
+        "category": "Fur Color",
+        "id": 1,
+        "value": "Tuxedo"
+      },
+      {
+        "category": "Outfit",
+        "id": 4,
+        "value": "Tuxedo"
+      },
+      {
+        "category": "Expression",
+        "id": 4,
+        "value": "Blep"
+      },
+      {
+        "category": "Eye Style",
+        "id": 2,
+        "value": "Gold"
+      },
+      {
+        "category": "Ornament",
+        "id": 0,
+        "value": "Bell Collar"
+      }
+    ],
+    "4": [
+      {
+        "category": "Background",
+        "id": 1,
+        "value": "Moonlit Rooftop"
+      },
+      {
+        "category": "Cat Style",
+        "id": 4,
+        "value": "Sphynx"
+      },
+      {
+        "category": "Fur Color",
+        "id": 3,
+        "value": "Silver Tabby"
+      },
+      {
+        "category": "Outfit",
+        "id": 4,
+        "value": "Tuxedo"
+      },
+      {
+        "category": "Expression",
+        "id": 2,
+        "value": "Grinning"
+      },
+      {
+        "category": "Eye Style",
+        "id": 1,
+        "value": "Sapphire"
+      },
+      {
+        "category": "Ornament",
+        "id": 2,
+        "value": "Mini Crown"
+      }
+    ],
+    "5": [
+      {
+        "category": "Background",
+        "id": 5,
+        "value": "Aurora"
+      },
+      {
+        "category": "Cat Style",
+        "id": 2,
+        "value": "Persian"
+      },
+      {
+        "category": "Fur Color",
+        "id": 5,
+        "value": "Lavender"
+      },
+      {
+        "category": "Outfit",
+        "id": 0,
+        "value": "Street Hoodie"
+      },
+      {
+        "category": "Expression",
+        "id": 1,
+        "value": "Sleepy"
+      },
+      {
+        "category": "Eye Style",
+        "id": 2,
+        "value": "Gold"
+      },
+      {
+        "category": "Ornament",
+        "id": 1,
+        "value": "Blue Bow"
+      }
+    ],
+    "6": [
+      {
+        "category": "Background",
+        "id": 2,
+        "value": "Cat Garden"
+      },
+      {
+        "category": "Cat Style",
+        "id": 2,
+        "value": "Persian"
+      },
+      {
+        "category": "Fur Color",
+        "id": 1,
+        "value": "Tuxedo"
+      },
+      {
+        "category": "Outfit",
+        "id": 2,
+        "value": "Star Suit"
+      },
+      {
+        "category": "Expression",
+        "id": 5,
+        "value": "Fierce"
+      },
+      {
+        "category": "Eye Style",
+        "id": 4,
+        "value": "Slit Eyes"
+      },
+      {
+        "category": "Ornament",
+        "id": 1,
+        "value": "Blue Bow"
+      }
+    ],
+    "7": [
+      {
+        "category": "Background",
+        "id": 3,
+        "value": "Candy Grid"
+      },
+      {
+        "category": "Cat Style",
+        "id": 3,
+        "value": "Siamese"
+      },
+      {
+        "category": "Fur Color",
+        "id": 4,
+        "value": "Cream"
+      },
+      {
+        "category": "Outfit",
+        "id": 5,
+        "value": "Astro Armor"
+      },
+      {
+        "category": "Expression",
+        "id": 0,
+        "value": "Curious"
+      },
+      {
+        "category": "Eye Style",
+        "id": 1,
+        "value": "Sapphire"
+      },
+      {
+        "category": "Ornament",
+        "id": 0,
+        "value": "Bell Collar"
+      }
+    ],
+    "8": [
+      {
+        "category": "Background",
+        "id": 4,
+        "value": "Royal Blue"
+      },
+      {
+        "category": "Cat Style",
+        "id": 1,
+        "value": "Maine Coon"
+      },
+      {
+        "category": "Fur Color",
+        "id": 0,
+        "value": "Ginger"
+      },
+      {
+        "category": "Outfit",
+        "id": 5,
+        "value": "Astro Armor"
+      },
+      {
+        "category": "Expression",
+        "id": 4,
+        "value": "Blep"
+      },
+      {
+        "category": "Eye Style",
+        "id": 3,
+        "value": "Star Pupils"
+      },
+      {
+        "category": "Ornament",
+        "id": 2,
+        "value": "Mini Crown"
+      }
+    ]
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "status": "passed",
+  "test_only": true,
+  "local_contracts": [
+    "UltraCatRenderer",
+    "UltraCatCompatProbe"
+  ],
+  "token_uri_json_decoded": true,
+  "token_svg_decoded": true,
+  "collection_uri_json_decoded": true,
+  "collection_logo_svg_decoded": true,
+  "svg_dimensions": "512x512",
+  "supports_erc721_and_metadata_and_erc2981": true,
+  "local_vm_gas": {
+    "renderer_deploy": "4220869",
+    "probe_deploy": "1277397",
+    "token_uri": "598392"
+  },
+  "note": "Local VM only. This does not deploy anything or prove Ebisu’s Bay, any marketplace, or wallet will index/render the probe."
+}

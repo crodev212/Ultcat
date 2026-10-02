@@ -1,0 +1,24 @@
+{
+  "name": "ultracat-5212-cronos-nft",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Fully on-chain ULTRA CAT ERC-721 with Wolfies holder airdrop and reserve inventory for Ebisu's Bay.",
+  "scripts": {
+    "generate": "node scripts/generate_ultracat.js",
+    "compile": "npm run generate && node scripts/compile_ultracat.js",
+    "test": "npm run compile && node test/test_ultracat.js",
+    "preview": "npm run compile && node scripts/export_preview.js",
+    "compile:probe": "node scripts/compile_probe.js",
+    "test:probe": "npm run compile:probe && node scripts/test_probe.js"
+  },
+  "devDependencies": {
+    "@ethereumjs/util": "^10.1.3",
+    "@ethereumjs/vm": "^10.1.3",
+    "erc721a": "4.3.0",
+    "ethers": "6.17.0",
+    "solc": "0.8.37"
+  },
+  "overrides": {
+    "tmp": "0.2.7"
+  }
+}

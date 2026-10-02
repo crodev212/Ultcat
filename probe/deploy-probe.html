@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ULTRA CAT · Compatibility probe deployment</title>
+<style>
+:root{color-scheme:dark;--bg:#10121a;--panel:#1b1f2b;--line:#353b4d;--text:#f5f6fa;--muted:#aeb6c7;--accent:#ffbe5c;--ok:#77e0b5;--bad:#ff8d8d}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.55 system-ui,-apple-system,Segoe UI,sans-serif}.wrap{max-width:900px;margin:0 auto;padding:28px 18px 64px}h1{font-size:clamp(28px,5vw,42px);line-height:1.05;margin:8px 0 14px}.eyebrow{color:var(--accent);font-size:12px;font-weight:800;letter-spacing:.16em;text-transform:uppercase}.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;margin:14px 0}.warning{border-left:4px solid var(--accent);background:#3a2c1a}.muted{color:var(--muted)}.mono,code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;overflow-wrap:anywhere}button{border:0;border-radius:9px;background:var(--accent);color:#20180d;font-weight:800;padding:11px 15px;cursor:pointer;margin:5px 8px 3px 0}button:disabled{opacity:.45;cursor:not-allowed}input{display:block;margin:8px 0 14px;max-width:100%;color:var(--text)}.status{font-weight:700}.ok{color:var(--ok)}.bad{color:var(--bad)}pre{background:#0b0d12;border:1px solid var(--line);border-radius:10px;padding:14px;min-height:110px;max-height:420px;overflow:auto;white-space:pre-wrap;word-break:break-word}.address{font-weight:700;color:var(--accent)}.result{white-space:pre-wrap;overflow-wrap:anywhere}ol{padding-left:22px}.small{font-size:13px}.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:4px 9px;color:var(--muted);font-size:12px}a{color:#91c5ff}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">Local wallet-signed test only</div>
+  <h1>ULTRA CAT · Ebisu compatibility probe</h1>
+  <p class="muted">This page can deploy only the shared renderer and the clearly named one-token <strong>ULTRA CAT COMPAT PROBE</strong>. It cannot deploy <code>UltraCat5212</code>, run the Wolfies airdrop, mint reserve NFTs, or finalize a production collection.</p>
+
+  <section class="card warning">
+    <strong>Read before continuing</strong>
+    <ul>
+      <li>This creates irreversible Cronos Mainnet contracts and one public test NFT. You review and approve each transaction in your wallet.</li>
+      <li>It sends no private key or seed phrase anywhere; signing remains in your wallet extension.</li>
+      <li>Use the selected treasury account <span class="mono address" id="treasury"></span>. Never paste keys into this page or chat.</li>
+      <li>A successful probe checks Ebisu's handling of one sample only. It cannot guarantee display on every wallet or marketplace.</li>
+    </ul>
+  </section>
+
+  <section class="card">
+    <h2>1. Load the reviewed artifacts</h2>
+    <label>Renderer artifact (`release/UltraCatRenderer.json`)<input id="rendererFile" type="file" accept="application/json,.json"></label>
+    <label>Probe artifact (`release/UltraCatCompatProbe.json`)<input id="probeFile" type="file" accept="application/json,.json"></label>
+    <div class="row"><button id="loadBtn" type="button">Load and validate artifacts</button><span id="artifactStatus" class="status muted">Not loaded</span></div>
+    <p class="small muted">The artifacts are read locally in this browser tab. Their bytecode must match the reviewed pinned SHA-256 values in this helper; no upload is made.</p>
+  </section>
+
+  <section class="card">
+    <h2>2. Connect the selected wallet</h2>
+    <p class="small">Required network: <strong>Cronos Mainnet, chain ID 25</strong>. Required signing address is shown above.</p>
+    <button id="connectBtn" type="button">Connect wallet</button>
+    <div id="walletStatus" class="status muted">Not connected</div>
+  </section>
+
+  <section class="card">
+    <h2>3. Deploy the renderer</h2>
+    <p class="small muted">This is the same immutable renderer artifact planned for production. If the probe passes, reuse this renderer address in the final NFT constructor instead of deploying another renderer.</p>
+    <button id="rendererBtn" type="button" disabled>Estimate and request renderer deployment</button>
+    <div id="rendererResult" class="small muted result">No renderer deployment requested.</div>
+  </section>
+
+  <section class="card">
+    <h2>4. Deploy the one-token probe</h2>
+    <p class="small">Constructor arguments are set by this page: recipient = selected treasury, renderer = the address deployed above, royalty receiver = selected treasury.</p>
+    <button id="probeBtn" type="button" disabled>Estimate and request probe deployment</button>
+    <div id="probeResult" class="small muted result">No probe deployment requested.</div>
+  </section>
+
+  <section class="card">
+    <h2>5. Check the result in Ebisu's Bay</h2>
+    <ol>
+      <li>After the probe is mined, run <code>node scripts/check_ebisus_api.js &lt;probe-address&gt; 1</code> from the extracted project folder.</li>
+      <li>Open the actual probe token page in Ebisu's Bay and verify the thumbnail and detail image render—not just that the API returned a record.</li>
+      <li>If either check is missing or inconclusive, do not deploy the final collection. Follow the optional technical-support route in <code>docs/EBISUS-BAY-PREDEPLOY-COMPATIBILITY.md</code> or pause.</li>
+    </ol>
+  </section>
+
+  <section class="card"><h2>Transaction log</h2><p class="small muted">Keep this tab open between the two steps; the renderer address is held in memory. If a submitted transaction times out, check its transaction hash and explorer status before retrying—do not redeploy blindly.</p><pre id="log" aria-live="polite">Ready. No transaction has been sent.</pre></section>
+</div>
+<script>
+(() => {
+  'use strict';
+  const TREASURY = '0x2B0aEC2cb2063060ac44D85f0b7463102D7f18e2';
+  const CHAIN_ID = '0x19';
+  const MAX_GAS_PRICE_GWEI = 5000n;
+  const PINNED = Object.freeze({
+    UltraCatRenderer: Object.freeze({ sha256: '6a2543a7f28f2c76e9790c7c0ad5b84b9c2de40f2a0ee1b1be0f1f3b4d5270b3', runtimeBytes: 21080, initBytes: 21107 }),
+    UltraCatCompatProbe: Object.freeze({ sha256: 'd3a110584b44a9bc1e0951488c5619c02e82dc41283339514817a11b7360ae9a', runtimeBytes: 5806, initBytes: 7188 })
+  });
+  document.getElementById('treasury').textContent = TREASURY;
+  const $ = id => document.getElementById(id);
+  let rendererArtifact = null;
+  let probeArtifact = null;
+  let account = null;
+  let rendererAddress = null;
+  let probeAddress = null;
+  let busy = false;
+
+  function log(message) {
+    const box = $('log');
+    box.textContent += `\n${new Date().toLocaleTimeString()}  ${message}`;
+    box.scrollTop = box.scrollHeight;
+  }
+  function setStatus(id, message, good) {
+    const el = $(id);
+    el.textContent = message;
+    el.className = `status ${good === true ? 'ok' : good === false ? 'bad' : 'muted'}`;
+  }
+  function addrWord(address) {
+    if (!/^0x[0-9a-fA-F]{40}$/.test(address)) throw new Error('Invalid EVM address in constructor arguments.');
+    return address.slice(2).toLowerCase().padStart(64, '0');
+  }
+  function formatCro(wei) {
+    const whole = wei / 10n ** 18n;
+    const frac = (wei % 10n ** 18n).toString().padStart(18, '0').slice(0, 6);
+    return `${whole}.${frac} CRO`;
+  }
+  async function readArtifact(inputId, expectedName) {
+    const file = $(inputId).files[0];
+    if (!file) throw new Error(`Choose ${expectedName}.json first.`);
+    const artifact = JSON.parse(await file.text());
+    if (artifact.contractName !== expectedName || typeof artifact.bytecode !== 'string' || !/^0x(?:[0-9a-fA-F]{2})+$/.test(artifact.bytecode)) {
+      throw new Error(`Wrong or malformed artifact; expected ${expectedName}.`);
+    }
+    const pin = PINNED[expectedName];
+    if (!pin || artifact.runtimeBytes !== pin.runtimeBytes || artifact.initBytes !== pin.initBytes || artifact.bytecode.length !== 2 + 2 * pin.initBytes) {
+      throw new Error(`${expectedName} artifact size fields do not match the reviewed build.`);
+    }
+    if (!globalThis.crypto?.subtle) throw new Error('This browser cannot verify the pinned artifact. Serve this page from localhost in a modern browser.');
+    const bytes = new TextEncoder().encode(artifact.bytecode);
+    const digest = await globalThis.crypto.subtle.digest('SHA-256', bytes);
+    const hash = Array.from(new Uint8Array(digest), b => b.toString(16).padStart(2, '0')).join('');
+    if (hash !== pin.sha256) throw new Error(`${expectedName} bytecode does not match the reviewed pinned hash. Do not deploy it.`);
+    return artifact;
+  }
+  async function loadArtifacts() {
+    try {
+      rendererArtifact = await readArtifact('rendererFile', 'UltraCatRenderer');
+      probeArtifact = await readArtifact('probeFile', 'UltraCatCompatProbe');
+      setStatus('artifactStatus', `Loaded. Renderer ${rendererArtifact.runtimeBytes} bytes; probe ${probeArtifact.runtimeBytes} bytes.`, true);
+      log('Artifacts validated in this tab. No file was uploaded.');
+      updateButtons();
+    } catch (error) {
+      rendererArtifact = probeArtifact = null;
+      setStatus('artifactStatus', error.message, false);
+      updateButtons();
+    }
+  }
+  async function connectWallet() {
+    try {
+      if (!window.ethereum) throw new Error('No injected wallet found. Open this page in a local browser with MetaMask or another EIP-1193 wallet enabled.');
+      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+      if (!accounts || !accounts.length) throw new Error('Wallet did not return an account.');
+      const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+      account = accounts[0];
+      if (chainId.toLowerCase() !== CHAIN_ID) {
+        account = null;
+        throw new Error(`Wrong network (${chainId}). Switch your wallet manually to Cronos Mainnet (chain ID 25), then reconnect.`);
+      }
+      if (account.toLowerCase() !== TREASURY.toLowerCase()) {
+        const actual = account;
+        account = null;
+        throw new Error(`Connected ${actual}; expected the selected treasury ${TREASURY}. Do not continue with another account.`);
+      }
+      setStatus('walletStatus', `Connected ${account} on chain ID 25.`, true);
+      log(`Connected ${account} on Cronos Mainnet.`);
+      updateButtons();
+    } catch (error) {
+      setStatus('walletStatus', error.message || String(error), false);
+    }
+  }
+  function updateButtons() {
+    const connected = Boolean(account && rendererArtifact && probeArtifact && !busy);
+    $('rendererBtn').disabled = !connected || Boolean(rendererAddress);
+    $('probeBtn').disabled = !connected || !rendererAddress || Boolean(probeAddress);
+  }
+  async function waitReceipt(hash) {
+    for (let i = 0; i < 150; i++) {
+      const receipt = await window.ethereum.request({ method: 'eth_getTransactionReceipt', params: [hash] });
+      if (receipt) return receipt;
+      await new Promise(resolve => setTimeout(resolve, 2000));
+    }
+    throw new Error(`Timed out waiting for receipt ${hash}. Check the wallet/explorer before retrying.`);
+  }
+  async function submitDeployment(label, data) {
+    const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+    const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+    if (chainId.toLowerCase() !== CHAIN_ID || !accounts[0] || accounts[0].toLowerCase() !== TREASURY.toLowerCase()) {
+      account = null;
+      updateButtons();
+      throw new Error('Wallet account or chain changed. Reconnect to the selected treasury on Cronos Mainnet.');
+    }
+    const tx = { from: account, data, value: '0x0' };
+    const estimateHex = await window.ethereum.request({ method: 'eth_estimateGas', params: [tx] });
+    const estimate = BigInt(estimateHex);
+    const gasLimit = (estimate * 130n + 99n) / 100n;
+    let feeText = 'fee quote unavailable';
+    try {
+      const gasPrice = BigInt(await window.ethereum.request({ method: 'eth_gasPrice', params: [] }));
+      const gweiScale = 10n ** 9n;
+      const gwei = gasPrice / gweiScale;
+      const gweiMilli = (gasPrice % gweiScale) * 1000n / gweiScale;
+      const gweiText = gweiMilli ? `${gwei}.${gweiMilli.toString().padStart(3, '0').replace(/0+$/, '')}` : `${gwei}`;
+      const maxCost = gasLimit * gasPrice;
+      if (gasPrice > MAX_GAS_PRICE_GWEI * gweiScale) throw new Error(`Current gas price is ${gweiText} Gwei, above this page's ${MAX_GAS_PRICE_GWEI} Gwei safety cap. Stop and re-check the official fee endpoint; do not override casually.`);
+      feeText = `${gweiText} Gwei; gas-limit cap ${gasLimit.toString()}; approximate maximum ${formatCro(maxCost)}.`;
+    } catch (error) {
+      if ((error.message || '').includes('safety cap')) throw error;
+      log(`Fee quote warning: ${error.message || error}`);
+    }
+    const ok = window.confirm(
+      `${label}\n\nEstimated gas: ${estimate.toString()}\n30% buffered gas limit: ${gasLimit.toString()}\n${feeText}\n\nThe wallet will show the final transaction for you to review. Continue?`
+    );
+    if (!ok) { log(`${label} cancelled before wallet submission.`); return null; }
+    const finalChainId = await window.ethereum.request({ method: 'eth_chainId' });
+    const finalAccounts = await window.ethereum.request({ method: 'eth_accounts' });
+    if (finalChainId.toLowerCase() !== CHAIN_ID || !finalAccounts[0] || finalAccounts[0].toLowerCase() !== TREASURY.toLowerCase()) {
+      account = null;
+      updateButtons();
+      throw new Error('Wallet account or chain changed before submission. No transaction was sent; reconnect and re-estimate.');
+    }
+    const hash = await window.ethereum.request({ method: 'eth_sendTransaction', params: [{ ...tx, gas: `0x${gasLimit.toString(16)}` }] });
+    log(`${label} submitted: ${hash}. Waiting for the wallet receipt.`);
+    const receipt = await waitReceipt(hash);
+    if (receipt.status !== '0x1') throw new Error(`${label} reverted. Receipt: ${hash}`);
+    if (!receipt.contractAddress) throw new Error(`${label} receipt has no contract address. Check explorer: ${hash}`);
+    log(`${label} confirmed at ${receipt.contractAddress} (tx ${hash}).`);
+    return { address: receipt.contractAddress, hash, gasUsed: receipt.gasUsed };
+  }
+  async function deployRenderer() {
+    if (busy || !rendererArtifact || !account) return;
+    busy = true; updateButtons();
+    $('rendererResult').textContent = 'Estimating…';
+    try {
+      const result = await submitDeployment('Deploy UltraCatRenderer (shared production renderer)', rendererArtifact.bytecode);
+      if (!result) { $('rendererResult').textContent = 'Cancelled; no renderer transaction sent.'; return; }
+      rendererAddress = result.address;
+      $('rendererResult').textContent = `Renderer: ${rendererAddress}\nTransaction: ${result.hash}\nGas used: ${BigInt(result.gasUsed).toString()}`;
+    } catch (error) {
+      $('rendererResult').textContent = error.message || String(error);
+      log(`Renderer deployment error: ${error.message || error}`);
+    } finally { busy = false; updateButtons(); }
+  }
+  async function deployProbe() {
+    if (busy || !probeArtifact || !rendererAddress || !account) return;
+    busy = true; updateButtons();
+    $('probeResult').textContent = 'Estimating…';
+    try {
+      const args = addrWord(TREASURY) + addrWord(rendererAddress) + addrWord(TREASURY);
+      const result = await submitDeployment('Deploy test-only UltraCatCompatProbe (mints only one test token)', probeArtifact.bytecode + args);
+      if (!result) { $('probeResult').textContent = 'Cancelled; no probe transaction sent.'; return; }
+      probeAddress = result.address;
+      $('probeResult').textContent = `Probe: ${probeAddress}\nTransaction: ${result.hash}\nGas used: ${BigInt(result.gasUsed).toString()}\n\nAfter indexing, run: node scripts/check_ebisus_api.js ${probeAddress} 1\nThen inspect the actual Ebisu item page.`;
+    } catch (error) {
+      $('probeResult').textContent = error.message || String(error);
+      log(`Probe deployment error: ${error.message || error}`);
+    } finally { busy = false; updateButtons(); }
+  }
+  $('loadBtn').addEventListener('click', loadArtifacts);
+  $('connectBtn').addEventListener('click', connectWallet);
+  $('rendererBtn').addEventListener('click', deployRenderer);
+  $('probeBtn').addEventListener('click', deployProbe);
+  if (window.ethereum) {
+    window.ethereum.on?.('chainChanged', () => { account = null; setStatus('walletStatus', 'Network changed; reconnect before continuing.', false); updateButtons(); });
+    window.ethereum.on?.('accountsChanged', () => { account = null; setStatus('walletStatus', 'Account changed; reconnect before continuing.', false); updateButtons(); });
+  }
+})();
+</script>
+</body>
+</html>
